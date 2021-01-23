@@ -99,7 +99,7 @@ app.get('/callback', function(req, res) {
           json: true
         };
 
-        // use the access token to access the Spotify Web API
+        // use the access token to access the Spotify Web API (search playlist)
         request.get(options, function(error, response, body) {
             var playlistTitles = [];
             for (const playlist of body.items) {
