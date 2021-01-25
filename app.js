@@ -8,12 +8,12 @@
  */
 
 require('dotenv').config();
+var appleSearch = require('./appleSearch');
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
-
 var client_id = process.env.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET; // Your secret
 var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
@@ -56,6 +56,12 @@ app.get('/login', function(req, res) {
       redirect_uri: redirect_uri,
       state: state
     }));
+});
+
+// get jwt token for apple and search the music store
+app.get('/appleSearch', function (req, res) {
+  appleSearch.getAppleToken();
+  res.redirect('/#');
 });
 
 app.get('/callback', function(req, res) {
