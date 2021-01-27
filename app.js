@@ -8,7 +8,7 @@
  */
 
 require('dotenv').config();
-var appleSearch = require('./appleSearch');
+var directRoutes = require('./directRoutes');
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
@@ -41,6 +41,16 @@ app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
 
+// get the Apple JWT and add it to the response header
+app.get('/appleSearch', function (req, res) {
+  directRoutes.getAppleAuthToken()
+    .then((token) =>{
+      res.setHeader('Set-Cookie', 'Authorization=Bearer ' + token + 'Max-Age=3000; HttpOnly;');
+      res.redirect('/');
+    });
+});
+
+// ----------------------OLD CODE (NEEDS FIXING)------------------------
 app.get('/login', function(req, res) {
 
   var state = generateRandomString(16);
@@ -60,8 +70,9 @@ app.get('/login', function(req, res) {
 
 // get jwt token for apple and search the music store
 app.get('/appleSearch', function (req, res) {
-  appleSearch.getAppleToken();
-  res.redirect('/#');
+  var token = appleSearch.getAppleToken();
+  res.setHeader('Set-Cookie', 'Authorization=Bearer ' + token + 'Max-Age=3000; HttpOnly;');
+  res.redirect('/');
 });
 
 app.get('/callback', function(req, res) {

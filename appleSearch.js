@@ -6,10 +6,12 @@ const app = express();
 require('dotenv').config();
 var request = require('request');
 const path = require('path');
+const { response } = require('express');
 
 module.exports = {
-    getAppleToken: function () {
-        const private_key = fs.readFileSync('./keys/apple_private_key.p8').toString(); // read your private key from your file system
+    // Using the Apple ENV variables create a Apple JWT 
+    createAppleJWT: function () {
+        const private_key = fs.readFileSync('./keys/apple_private_key.p8').toString();
         const team_id = process.env.APPLE_TEAM_ID;
         const key_id = process.env.APPLE_KEY_ID;
         const token = jwt.sign({}, private_key, {
@@ -21,18 +23,22 @@ module.exports = {
             kid: key_id
           }
         });
-        searchApple(token);
+        return token;
     },
-}
 
-function searchApple(token) {
-    var url = 'https://api.music.apple.com/v1/catalog/ca/search?term=james+brown&limit=2&types=artists,albums';
-    var options = {
-        url: url,
-        headers: { 'Authorization': 'Bearer ' + token },
-        json: true
-      };
-    request.get(options, function(error, response, body) {
-      console.log(body);
-    });
+    // Use the token to make an API requst to apple to check that the JWT works 
+    checkAppleToken: function(token) {
+        var url = 'https://api.music.apple.com/v1/catalog/ca/songs/203709340';
+        var options = {
+            url: url,
+            headers: { 'Authorization': 'Bearer ' + token },
+            json: true
+        };
+        return new Promise(function (resolve, reject) {
+            request.get(options, function(error, response, body) {
+                if (error) reject(error);
+                resolve(response.statusCode);
+            });
+        });
+    },
 }
