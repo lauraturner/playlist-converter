@@ -16,13 +16,13 @@
     </div>
     <div class="container">
     <div class="row" id="appleSearchForm">
-        
-        <label for="appleSearch">Search Apple music for a playlist:</label>
-        <div class="form-group applePlaylistSearch">
-            <input type="search" id="appleSearch" class="form-control" />
-            <a href="/appleSearch" class="btn btn-lg appleImportButton">Search</a>
-        </div>
-
+        <form action="/appleSearch" method="POST">
+            <label for="appleSearch">Search Apple music for a playlist:</label>
+            <div class="form-group applePlaylistSearch">
+                <input type="search" id="appleSearch" class="form-control" name="appleSearch" required/>
+                <button type="submit" class="btn btn-lg appleImportButton" name="appleFormSubmit">Search</a>
+            </div>
+        </form>
     </div>
     </div>
   <script src="js/scripts.js"></script>

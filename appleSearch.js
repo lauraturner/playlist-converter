@@ -7,6 +7,7 @@ require('dotenv').config();
 var request = require('request');
 const path = require('path');
 const { response } = require('express');
+const querystring = require('querystring');
 
 module.exports = {
     // Using the Apple ENV variables create a Apple JWT 
@@ -38,6 +39,23 @@ module.exports = {
             request.get(options, function(error, response, body) {
                 if (error) reject(error);
                 resolve(response.statusCode);
+            });
+        });
+    },
+
+    applePlaylistSearch: function(search, token) {
+        const encodedSearch =  search.replace(' ', '+');
+        var url = `https://api.music.apple.com/v1/catalog/ca/search?term=${encodedSearch}&limit=5&types=playlists`;
+        var options = {
+            url: url,
+            headers: { 'Authorization': token },
+            json: true
+        };
+        return new Promise(function (resolve, reject) {
+            request.get(options, function(error, response, body) {
+                if (error) reject(error);
+                console.log(body);
+                resolve(body.results.playlists.data);
             });
         });
     },

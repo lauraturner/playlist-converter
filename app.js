@@ -9,6 +9,7 @@ var client_id = process.env.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET; // Your secret
 var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
 var path = require('path');
+var bodyParser = require('body-parser');
 
 /**
  * Generates a random string containing numbers and letters
@@ -33,12 +34,23 @@ app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
 // get the Apple JWT and add it to the response header
 app.get('/appleAuth', function (req, res) {
   directRoutes.getAppleAuthToken()
     .then((token) =>{
-      res.setHeader('Set-Cookie', 'Authorization=Bearer ' + token + 'Max-Age=3000; HttpOnly;');
+      res.setHeader('Set-Cookie', 'Authorization=Bearer ' + token + ';Max-Age=3000; HttpOnly;');
       res.sendFile(path.join(__dirname + '/public/appleSearch.html'));
+    });
+});
+
+// TODO: Send back playlist info to display
+app.post('/appleSearch', function (req, res) {
+  directRoutes.getAppleSearchRes(req)
+    .then((playlists) =>{
+      console.log(playlists);
     });
 });
 
@@ -61,7 +73,7 @@ app.get('/login', function(req, res) {
 });
 
 // get jwt token for apple and search the music store
-app.get('/appleSearch', function (req, res) {
+app.get('/appleAuth', function (req, res) {
   var token = appleSearch.getAppleToken();
   res.setHeader('Set-Cookie', 'Authorization=Bearer ' + token + 'Max-Age=3000; HttpOnly;');
   res.redirect('/');

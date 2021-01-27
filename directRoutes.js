@@ -12,4 +12,9 @@ module.exports = {
             throw new Error(status);
         }
     },
+    getAppleSearchRes: async function (req) {
+        var search = req.body.appleSearch;
+        var token = req.cookies.Authorization;
+        return await appleSearch.applePlaylistSearch(search, token);
+    }
 }
