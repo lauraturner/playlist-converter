@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var client_id = process.env.CLIENT_ID; // Your client id
 var client_secret = process.env.CLIENT_SECRET; // Your secret
 var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
+var path = require('path');
 
 /**
  * Generates a random string containing numbers and letters
@@ -33,15 +34,15 @@ app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
 // get the Apple JWT and add it to the response header
-app.get('/appleSearch', function (req, res) {
+app.get('/appleAuth', function (req, res) {
   directRoutes.getAppleAuthToken()
     .then((token) =>{
       res.setHeader('Set-Cookie', 'Authorization=Bearer ' + token + 'Max-Age=3000; HttpOnly;');
-      res.redirect('/');
+      res.sendFile(path.join(__dirname + '/public/appleSearch.html'));
     });
 });
 
-// ----------------------OLD CODE (NEEDS FIXING)------------------------
+// ------------------------OLD CODE (NEEDS FIXING)------------------------
 app.get('/login', function(req, res) {
 
   var state = generateRandomString(16);

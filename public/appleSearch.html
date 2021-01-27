@@ -10,16 +10,19 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="display-1">Playlist Converter</h1>
+        <a  href="/">
+            <h1 class="display-1">Playlist Converter</h1>
+        </a>
     </div>
     <div class="container">
-    <div class="row">
-        <div class="col text-center playlistButton">
-            <a href="/appleAuth" class="btn btn-lg appleImportButton">Apple playlist to Spotify</a>
+    <div class="row" id="appleSearchForm">
+        
+        <label for="appleSearch">Search Apple music for a playlist:</label>
+        <div class="form-group applePlaylistSearch">
+            <input type="search" id="appleSearch" class="form-control" />
+            <a href="/appleSearch" class="btn btn-lg appleImportButton">Search</a>
         </div>
-        <div class="col text-center playlistButton">
-            <button type="button" class="btn btn-lg spotifyImportButton">Spotify playlist to Apple</button>
-        </div>
+
     </div>
     </div>
   <script src="js/scripts.js"></script>

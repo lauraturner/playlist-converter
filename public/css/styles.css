@@ -1,12 +1,9 @@
 h1 { 
     text-align: center;
     margin-top: 10% !important;
-
 }
 
-.playlistButton {
-    margin-top: 15% !important;
-}
+.playlistButton { margin-top: 15% !important; }
 
 body {
     background-image: url('../img/luke-chesser-pJadQetzTkI-unsplash.jpg');
@@ -23,3 +20,14 @@ body {
     color: rgba(0, 0, 0, 0.5) !important;
     background-color: white;
 }
+
+#appleSearchForm { margin-top: 20%; }
+
+.applePlaylistSearch{ display: flex; }
+
+#appleSearch{ margin-right: 1%; }
+
+a { 
+    color: inherit !important;
+    text-decoration: none !important 
+} 
