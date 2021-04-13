@@ -54,9 +54,22 @@ module.exports = {
         return new Promise(function (resolve, reject) {
             request.get(options, function(error, response, body) {
                 if (error) reject(error);
-                console.log(body);
-                resolve(body.results.playlists.data);
+                var playlistData = formatSearchResults(body.results.playlists.data);
+                resolve(playlistData);
             });
         });
     },
+}
+
+var formatSearchResults = function(data){
+    var playlists = [];
+    for(var i = 0; i < 5; i++){
+        var attributes = data[i].attributes;
+        var playlistData = { 'name': attributes.name,
+                    'art': attributes.artwork.url,
+                    'href': data[i].href
+        };
+        playlists.push(playlistData);
+    }
+    return playlists;
 }

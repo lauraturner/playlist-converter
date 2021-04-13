@@ -50,7 +50,8 @@ app.get('/appleAuth', function (req, res) {
 app.post('/appleSearch', function (req, res) {
   directRoutes.getAppleSearchRes(req)
     .then((playlists) =>{
-      console.log(playlists);
+      res.send(playlists);
+      return;
     });
 });
 
